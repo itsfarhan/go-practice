@@ -2,6 +2,7 @@ package calculator_test
 
 import (
 	"calculator"
+	"math"
 	"testing"
 )
 
@@ -81,16 +82,62 @@ func TestDivide(t *testing.T) {
 	testCases := []testCase{
 		{a: 6, b: 3, want: 2},
 		{a: 5, b: 2, want: 2.5},
-		{a: 10, b: 5, want: 2}, // expecting 0 for division by zero case
+		{a: 10, b: 5, want: 2},
+		{a: 1, b: 3, want: 0.333333},
 	}
 	for _, tc := range testCases {
 		got, err := calculator.Divide(tc.a, tc.b)
 		if err != nil {
 			t.Fatalf("want no error for valid input, got %v", err)
 		}
-		if tc.want != got {
+		// if tc.want != got {
+		// 	t.Errorf("Divide(%f,%f): want %f, got %f", tc.a, tc.b, tc.want, got)
+		// }
+		if !closeEnough(tc.want, got, 0.001) {
 			t.Errorf("Divide(%f,%f): want %f, got %f", tc.a, tc.b, tc.want, got)
 		}
 	}
 }
 
+func TestDivideInvalid(t *testing.T) {
+	t.Parallel()
+	_, err := calculator.Divide(1, 0)
+	if err == nil {
+		t.Error("want error for division by zero, got nil")
+	}
+}
+
+func TestSqrt(t *testing.T) {
+	t.Parallel()
+	type testCase struct {
+		a    float64
+		want float64
+	}
+	testCases := []testCase{
+		{a: 4, want: 2},
+		{a: 9, want: 3},
+		{a: 0, want: 0},
+		{a: 2, want: 1.414213},
+	}
+	for _, tc := range testCases {
+		got, err := calculator.Sqrt(tc.a)
+		if err != nil {
+			t.Fatalf("want no error for valid input, got %v", err)
+		}
+		if !closeEnough(tc.want, got, 0.1) {
+			t.Errorf("Sqrt(%f): want %f, got %f", tc.a, tc.want, got)
+		}
+	}
+}
+
+func TestSqrtInvalid(t *testing.T) {
+	t.Parallel()
+	_, err := calculator.Sqrt(-1)
+	if err == nil {
+		t.Error("Sqrt(-1): want error for invalid input, got nil")
+	}
+}
+
+func closeEnough(a, b, tolerance float64) bool {
+	return math.Abs(a-b) <= tolerance
+}
