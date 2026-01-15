@@ -1,14 +1,19 @@
 package bookstore
 
+import (
+	"errors"
+)
+
 type Book struct {
 	Title  string
 	Author string
 	Copies int
 }
 
-func Buy(b Book) Book { //Here we simulate buying a book by reducing the number of copies by 1
-	if b.Copies > 0 {
-		b.Copies--
+func Buy(b Book) (Book, error) {
+	if b.Copies == 0 {
+		return Book{}, errors.New("no copies available")
 	}
-	return b
+	b.Copies--
+	return b, nil
 }
