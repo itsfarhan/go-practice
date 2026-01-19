@@ -2,12 +2,19 @@ package bookstore
 
 import (
 	"errors"
+	// "fmt"
+	
 )
 
 type Book struct {
 	Title  string
 	Author string
 	Copies int
+}
+
+var books = []Book {
+	{Title: "Harry Potter"},
+	{Title: "SuperGirl: Woman of Tommorrow"},
 }
 
 func Buy(b Book) (Book, error) {
@@ -17,3 +24,4 @@ func Buy(b Book) (Book, error) {
 	b.Copies--
 	return b, nil
 }
+

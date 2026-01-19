@@ -27,4 +27,24 @@ func main() {
 	fmt.Println(x) // since value has not been assigned, therefore value is '0' by default
 	y := 1 // Directly initialize the value without var
 	fmt.Println(y)
+	type Book struct {
+		Title  string
+		Author string
+		Copies int
+	}
+
+	var book1 Book
+	book1.Title = "Farhan Go-Practice"
+	book1.Author = "Farhan"
+	book1.Copies = 10
+
+	fmt.Println(book1)
+
+	book1.Copies = 5
+	fmt.Println(book1)
+	
+	// books := []Book {
+	// 	{Title: "Harry Potter", Author: "J.K.Rowling", Copies: 5},
+	// 	{Title: "SuperGirl: Woman of Tommorrow", Author: "Tom King", Copies: 3},
+	// }
 }
