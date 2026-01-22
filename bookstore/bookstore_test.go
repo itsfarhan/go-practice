@@ -3,21 +3,20 @@ package bookstore_test
 import (
 	"bookstore"
 	"testing"
+
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestGetAllBooks(t *testing.T) {
+func TestGetBook(t *testing.T) {
 	t.Parallel()
-	catalog := []bookstore.Book{
-		{Title: "Harry potter", ISBN: 1},
-		// {Title: "Superman", ISBN: 2},	
+	catalog := map[int]bookstore.Book{
+		1: {ID: 1, Title: "For the Love of Go"},
+		2: {ID: 2, Title: "The Power of Go: Tools"},
 	}
-	want := bookstore.Book{Title: "Harry potter", ISBN: 1}
-		// {Title: "Superman", ISBN: 2},
-
-	got := bookstore.GetAllBooks(catalog, 1) // here bookstore.GetAllBooks called catalog for getting all books
-	if !cmp.Equal(want, got) { // here cmp is used to compare want and got 
-		t.Error(cmp.Diff(want, got)) // Equal and diff are methods of cmp package and used to compare two values
+	want := bookstore.Book{ID: 2, Title: "The Power of Go: Tools"}
+	got := bookstore.GetBook(catalog, 2)
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
 	}
 }
 

@@ -7,16 +7,11 @@ type Book struct {
 	Title  string
 	Author string
 	Copies int
-	ISBN   int
+	ID   int
 }
 
-func GetAllBooks(catalog []Book, ISBN int) Book {
-	for _, b := range catalog {
-		if b.ISBN == ISBN {
-			return b
-		}
-	}
-	return Book{} // why Book{} -
+func GetBook(catalog map[int]Book, ID int) Book {
+	return catalog[ID]
 }
 
 // var books = []Book {
