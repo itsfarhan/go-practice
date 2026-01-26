@@ -18,7 +18,7 @@ func TestGetAllBooks(t *testing.T) {
 		{ID: 1, Title: "For the Love of Go"},
 		{ID: 2, Title: "The Power of Go: Tools"},
 	}
-	got := bookstore.GetBook(catalog)
+	got := bookstore.GetBook(catalog, 2)
 	sort.Slice(got, func(i, j int) bool {
 		return got[i].ID < got[j].ID
 	})

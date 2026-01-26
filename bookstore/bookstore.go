@@ -1,7 +1,9 @@
 package bookstore
 
-//"errors"
-// "fmt"
+import (
+	"errors"
+	// "fmt"
+)
 
 type Book struct {
 	Title  string
@@ -10,8 +12,8 @@ type Book struct {
 	ID   int
 }
 
-func GetBook(catalog map[int]Book, ID int) Book {
-	return catalog[ID]
+func GetBook(catalog map[int]Book, ID int) (Book, error) {
+	return catalog[ID], nil
 }
 
 // var books = []Book {
