@@ -38,6 +38,24 @@ func TestGetBookBadIDreturnsError(t *testing.T) {
 	}
 }
 
+func TestGetAllBooks(t *testing.T) {
+	t.Parallel()
+	catalog := map[int]bookstore.Book{
+		1: {ID: 1, Title: "Harry Potter"},
+		2: {ID: 2, Title: "SuperWoman"},
+	}
+
+	want := []bookstore.Book{
+		{ID: 1, Title: "Harry Potter"},
+		{ID: 2, Title: "SuperWoman"},
+	}
+
+	got := bookstore.GetAllBooks(catalog)
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
+	}
+}
+
 // func TestBookstore(t *testing.T) {
 // 	t.Parallel()
 // 	// Placeholder for future tests related to the bookstore package
