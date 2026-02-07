@@ -60,6 +60,21 @@ func TestGetAllBooks(t *testing.T) {
 	}
 }
 
+func TestNetPriceCents(t *testing.T) {
+	t.Parallel()
+	b := bookstore.Book{
+		Title: "Harry Potter",
+		PriceCents: 1000,
+		DiscountPercent: 10,
+	}
+
+	want := 900
+	got := bookstore.NetPriceCents(b)
+	if want != got {
+		t.Errorf("want %d, got %d", want, got)
+	}
+}
+
 // func TestBookstore(t *testing.T) {
 // 	t.Parallel()
 // 	// Placeholder for future tests related to the bookstore package

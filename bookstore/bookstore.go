@@ -10,6 +10,8 @@ type Book struct {
 	Author string
 	Copies int
 	ID     int
+	PriceCents int
+	DiscountPercent int
 }
 
 func GetBook(catalog map[int]Book, ID int) (Book, error) {
@@ -29,6 +31,10 @@ func GetAllBooks(catalog map[int]Book) []Book {
 		books = append(books, b)
 	}
 	return books
+}
+
+func NetPriceCents(b Book) int {
+	return 0
 }
 
 // modify maps in Go is done by first retrieving the struct, modifying its fields, and then reassigning it back to the map.
