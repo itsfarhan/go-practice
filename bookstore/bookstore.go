@@ -14,6 +14,8 @@ type Book struct {
 	DiscountPercent int
 }
 
+type Catalog map[int]Book
+
 func GetBook(catalog map[int]Book, ID int) (Book, error) {
 	b, ok := catalog[ID] // Here, ok is boolean (true or false)
 	if !ok {
@@ -22,19 +24,17 @@ func GetBook(catalog map[int]Book, ID int) (Book, error) {
 	return b, nil
 }
 
-func GetAllBooks(catalog map[int]Book) []Book {
-	books := []Book{}
-	for ID := range catalog {
-		fmt.Println(ID)
+func (c Catalog) GetAllBooks() []Book {
+	result := []Book{}
+	for _, b := range c {
+		result = append(result, b)
 	}
-	for _, b := range catalog {
-		books = append(books, b)
-	}
-	return books
+	return result
 }
 
-func NetPriceCents(b Book) int {
-	return 0
+func (b Book) NetPriceCents() int { // To declare a method, we use the syntax func (receiver Type) MethodName() ReturnType
+	savings := b.PriceCents * b.DiscountPercent / 100
+	return b.PriceCents - savings
 }
 
 // modify maps in Go is done by first retrieving the struct, modifying its fields, and then reassigning it back to the map.

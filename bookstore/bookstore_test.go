@@ -41,7 +41,7 @@ func TestGetBookBadIDreturnsError(t *testing.T) {
 
 func TestGetAllBooks(t *testing.T) {
 	t.Parallel()
-	catalog := map[int]bookstore.Book{
+	catalog := bookstore.Catalog{
 		1: {ID: 1, Title: "Harry Potter"},
 		2: {ID: 2, Title: "SuperWoman"},
 	}
@@ -51,9 +51,9 @@ func TestGetAllBooks(t *testing.T) {
 		{ID: 2, Title: "SuperWoman"},
 	}
 
-	got := bookstore.GetAllBooks(catalog)
+	got := catalog.GetAllBooks()
 	sort.Slice(got, func(i, j int) bool {
-		return got[i].ID < got[j].ID 
+		return got[i].ID < got[j].ID
 	})
 	if !cmp.Equal(want, got) {
 		t.Error(cmp.Diff(want, got))
@@ -63,13 +63,12 @@ func TestGetAllBooks(t *testing.T) {
 func TestNetPriceCents(t *testing.T) {
 	t.Parallel()
 	b := bookstore.Book{
-		Title: "Harry Potter",
-		PriceCents: 1000,
+		Title:           "Harry Potter",
+		PriceCents:      1000,
 		DiscountPercent: 10,
 	}
-
 	want := 900
-	got := bookstore.NetPriceCents(b)
+	got := b.NetPriceCents()
 	if want != got {
 		t.Errorf("want %d, got %d", want, got)
 	}
