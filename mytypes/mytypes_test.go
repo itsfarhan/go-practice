@@ -24,3 +24,31 @@ func TestMyStringLen (t *testing.T) {
 		t.Errorf("Length: %v, want %v, got %v", input, want, got)
 	}
 }
+
+
+func TestMyBuilderHello (t *testing.T) {
+	t.Parallel()
+	var mb mytypes.MyBuilder
+	want := "Hello, Farhan!"
+	got := mb.Hello()
+	if want != got {
+		t.Errorf("want %q, got %q", want, got)
+	}
+}
+
+func TestStringBuilder(t *testing.T) {
+	t.Parallel()
+	var mb mytypes.MyBuilder
+	mb.Contents.WriteString("Hello, ")
+	mb.Contents.WriteString("Farhan")
+	want := "Hello, Farhan"
+	got := mb.Contents.String()
+	if want != got {
+		t.Errorf("want %q, got %q", want, got)
+	}
+	wantLen := 15
+	gotLen := mb.Contents.Len()
+	if wantLen != gotLen {
+		t.Errorf("%q wantLen %v, gotLen %v", mb.Contents.String(), wantLen, gotLen)
+	}
+}
