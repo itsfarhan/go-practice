@@ -52,3 +52,14 @@ func TestStringBuilder(t *testing.T) {
 		t.Errorf("%q wantLen %v, gotLen %v", mb.Contents.String(), wantLen, gotLen)
 	}
 }
+
+func TestStringUpperCaser(t *testing.T) {
+	t.Parallel()
+	var su mytypes.MyBuilder
+	su.Contents.WriteString("hello, farhan")
+	want := "HELLO, FARHAN"
+	got := su.ToUpper()
+	if want != got {
+		t.Errorf("want %q, got %q", want, got)
+	}
+}

@@ -10,6 +10,10 @@ type MyBuilder struct {
 	Contents strings.Builder
 }
 
+// type StringUpperCase struct {
+// 	Contents strings.Builder
+// }
+
 func (i MyInt) Twice() MyInt {
 	return i * 2
 }
@@ -20,4 +24,8 @@ func (s MyString) Len() int {
 
 func (m MyBuilder) Hello() string {
 	return "Hello, Farhan!"
+}
+
+func (su MyBuilder) ToUpper() string {
+	return strings.ToUpper(su.Contents.String())
 }
