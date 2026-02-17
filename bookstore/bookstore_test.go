@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 func TestGetBook(t *testing.T) {
@@ -24,8 +25,13 @@ func TestGetBook(t *testing.T) {
 		t.Fatal(err) // if is use fatalf then I need to use format specifier like - t.Fatalf("error: %v", err)
 	}
 	// Here, we compare the want and got values using cmp.Equal
-	if !cmp.Equal(want, got) {
-		t.Error(cmp.Diff(want, got)) // Here, we log the difference between want and got using cmp.Diff. It will show what is missing in got compared to want using '-' and what is extra in got compared to want using '+'
+	// if !cmp.Equal(want, got) {
+	// 	t.Error(cmp.Diff(want, got)) // Here, we log the difference between want and got using cmp.Diff. It will show what is missing in got compared to want using '-' and what is extra in got compared to want using '+'
+	// }
+
+	//This tells cmp.Equal to ignore any unexported fields on the bookstore.Book struct,preventing the unpleasant panic message.
+	if !cmp.Equal(want, got, cmpopts.IgnoreUnexported(bookstore.Book{})) {
+		t.Error(cmp.Diff(want, got))
 	}
 }
 
@@ -55,8 +61,11 @@ func TestGetAllBooks(t *testing.T) {
 	sort.Slice(got, func(i, j int) bool {
 		return got[i].ID < got[j].ID
 	})
-	if !cmp.Equal(want, got) {
-		t.Error(cmp.Diff(want, got))
+	// if !cmp.Equal(want, got) {
+	// 	t.Error(cmp.Diff(want, got))
+	// }
+	if !cmp.Equal(want, got, cmpopts.IgnoreUnexported(bookstore.Book{})) {
+	t.Error(cmp.Diff(want, got))
 	}
 }
 
@@ -71,6 +80,51 @@ func TestNetPriceCents(t *testing.T) {
 	got := b.NetPriceCents()
 	if want != got {
 		t.Errorf("want %d, got %d", want, got)
+	}
+}
+
+func TestSetPriceCents(t *testing.T) {
+	t.Parallel()
+	b := bookstore.Book{
+		Title:      "Harry Potter",
+		PriceCents: 4000,
+	}
+	want := 3000
+	err := b.SetPriceCents(want)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := b.PriceCents
+	if want != got {
+		t.Errorf("want updated price %d, got %d", want, got)
+	}
+}
+
+func TestSetPriceCentsInvalid(t *testing.T) {
+	t.Parallel()
+	b := bookstore.Book{
+		Title:      "Harry Potter",
+		PriceCents: 4000,
+	}
+	err := b.SetPriceCents(-1)
+	if err == nil {
+		t.Fatal("want error while setting invalid price, but got nil")
+	}
+}
+
+func TestSetCategory(t *testing.T) {
+	t.Parallel()
+	b := bookstore.Book{
+		Title: "Harry Potter",
+	}
+	want := "Comic"
+	err := b.SetCategory(want)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := b.Category()
+	if want != got {
+		t.Errorf("want category %q, got %q", want, got)
 	}
 }
 
