@@ -65,7 +65,7 @@ func TestGetAllBooks(t *testing.T) {
 	// 	t.Error(cmp.Diff(want, got))
 	// }
 	if !cmp.Equal(want, got, cmpopts.IgnoreUnexported(bookstore.Book{})) {
-	t.Error(cmp.Diff(want, got))
+		t.Error(cmp.Diff(want, got))
 	}
 }
 
@@ -117,16 +117,46 @@ func TestSetCategory(t *testing.T) {
 	b := bookstore.Book{
 		Title: "Harry Potter",
 	}
-	want := "Comic"
-	err := b.SetCategory(want)
-	if err != nil {
-		t.Fatal(err)
+	cats := []bookstore.Category{
+		bookstore.CategoryComic,
+		bookstore.CategoryFantasy,
+		bookstore.CategoryAction,
 	}
-	got := b.Category()
-	if want != got {
-		t.Errorf("want category %q, got %q", want, got)
+	for _, cat := range cats {
+		err := b.SetCategory(cat)
+		if err != nil {
+			t.Fatal(err)
+		}
+		got := b.Category()
+		if cat != got {
+			t.Errorf("want categort %q, got %q", cat, got)
+		}
 	}
 }
+
+// 	want := "Comic"
+// 	err := b.SetCategory(want)
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+// 	got := b.Category()
+// 	if want != got {
+// 		t.Errorf("want category %q, got %q", want, got)
+// 	}
+// }
+
+func TestSetCategoryInvalid(t *testing.T) {
+	t.Parallel()
+	b := bookstore.Book{
+		Title: "Harry Potter",
+	}
+	err := b.SetCategory(999)
+	if err == nil {
+		t.Errorf("No error, got nit")
+	}
+}
+
+
 
 // func TestBookstore(t *testing.T) {
 // 	t.Parallel()

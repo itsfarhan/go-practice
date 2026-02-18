@@ -12,7 +12,21 @@ type Book struct {
 	ID              int
 	PriceCents      int
 	DiscountPercent int
-	category        string
+	category        Category // why category? Because we want to restrict the category to a specific set of values, and using a custom type allows us to enforce that restriction.
+}
+
+type Category int
+
+const (
+	CategoryComic Category = iota
+	CategoryFantasy
+	CategoryAction
+)
+
+var validCategory = map[Category]bool{
+	CategoryComic:   true,
+	CategoryFantasy: true,
+	CategoryAction:  true,
 }
 
 type Catalog map[int]Book
@@ -46,13 +60,13 @@ func (b *Book) SetPriceCents(price int) error {
 	return nil
 }
 
-func (b Book) Category() string{
+func (b Book) Category() Category {
 	return b.category
 }
 
-func (b *Book) SetCategory(category string) error {
-	if category != "Comic" {
-		return fmt.Errorf("Invalid category %q", category)
+func (b *Book) SetCategory(category Category) error {
+	if !validCategory[category] {
+		return fmt.Errorf("unknown category %v", category)
 	}
 	b.category = category
 	return nil
